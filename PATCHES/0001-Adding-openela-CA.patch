@@ -1,0 +1,56 @@
+From 287018e2a689770ae34ff301e7d718971cc0f490 Mon Sep 17 00:00:00 2001
+From: Sherif Nagy <sherif@rockylinux.org>
+Date: Tue, 16 Aug 2022 12:29:08 +0100
+Subject: [PATCH] Adding openela linux CA
+
+---
+ SPECS/shim-unsigned-x64.spec | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/SPECS/shim-unsigned-x64.spec b/SPECS/shim-unsigned-x64.spec
+index 6064d69..bfb4a22 100644
+--- a/SPECS/shim-unsigned-x64.spec
++++ b/SPECS/shim-unsigned-x64.spec
+@@ -34,6 +34,8 @@ Source3:	sbat.redhat.csv
+ Source4:	shim.patches
+ 
+ Source100:	shim-find-debuginfo.sh
++Source90000:   sbat.openela.csv
++Source90001:   openela-root-ca.der
+ 
+ %include %{SOURCE4}
+ 
+@@ -100,7 +102,7 @@ git config --unset user.email
+ git config --unset user.name
+ mkdir build-%{efiarch}
+ mkdir build-%{efialtarch}
+-cp %{SOURCE3} data/
++cp %{SOURCE90000} data/
+ 
+ %build
+ COMMITID=$(cat commit)
+@@ -108,8 +110,8 @@ MAKEFLAGS="TOPDIR=.. -f ../Makefile COMMITID=${COMMITID} "
+ MAKEFLAGS+="EFIDIR=%{efidir} PKGNAME=shim RELEASE=%{release} "
+ MAKEFLAGS+="ENABLE_SHIM_HASH=true "
+ MAKEFLAGS+="%{_smp_mflags}"
+-if [ -f "%{SOURCE1}" ]; then
+-	MAKEFLAGS="$MAKEFLAGS VENDOR_CERT_FILE=%{SOURCE1}"
++if [ -f "%{SOURCE90001}" ]; then
++	MAKEFLAGS="$MAKEFLAGS VENDOR_CERT_FILE=%{SOURCE90001}"
+ fi
+ %if 0%{?dbxfile}
+ if [ -f "%{SOURCE2}" ]; then
+@@ -128,8 +130,8 @@ COMMITID=$(cat commit)
+ MAKEFLAGS="TOPDIR=.. -f ../Makefile COMMITID=${COMMITID} "
+ MAKEFLAGS+="EFIDIR=%{efidir} PKGNAME=shim RELEASE=%{release} "
+ MAKEFLAGS+="ENABLE_SHIM_HASH=true "
+-if [ -f "%{SOURCE1}" ]; then
+-	MAKEFLAGS="$MAKEFLAGS VENDOR_CERT_FILE=%{SOURCE1}"
++if [ -f "%{SOURCE90001}" ]; then
++	MAKEFLAGS="$MAKEFLAGS VENDOR_CERT_FILE=%{SOURCE90001}"
+ fi
+ %if 0%{?dbxfile}
+ if [ -f "%{SOURCE2}" ]; then
+-- 
+2.37.2
+
